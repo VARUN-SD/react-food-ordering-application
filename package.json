@@ -1,11 +1,12 @@
 {
   "name": "hello-react",
   "version": "1.0.0",
-  "description": "This is hello react",
+  "description": "This is a Food Ordering Web Application",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html",
-    "test": "jest"
+    "test": "jest",
+    "watch-test": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -21,13 +22,26 @@
   },
   "homepage": "https://github.com/VARUN-SD/hello-react#readme",
   "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "@testing-library/react": "^16.3.3",
+    "babel-jest": "^30.5.2",
+    "jest": "^30.5.2",
+    "jest-environment-jsdom": "^30.5.2",
     "parcel": "^2.16.4"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.12.0",
     "@tailwindcss/postcss": "^4.3.3",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "bootstrap-icons": "^1.13.1",
+    "falling-leaves": "^0.1.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-icons": "^5.7.0",
+    "react-redux": "^9.3.0",
     "react-router": "^7.18.3",
     "tailwindcss": "^4.3.3"
   },

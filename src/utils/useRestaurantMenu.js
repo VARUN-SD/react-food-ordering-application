@@ -9,13 +9,17 @@ const useRestaurantMenu=(resId)=>{
     },[]);
 
     const fetchMenu=async()=>{
-        const data=await fetch(MenuAPI+resId);
-        const json=await data.json();
-        setResInfo(json?.data);
-
+        try{
+            const data=await fetch(MenuAPI+resId);
+            const json=await data.json();
+            //console.log(json);
+            setResInfo(json?.data);   
+        } catch (error) {
+            console.error("Failed to fetch Menu:",error);
+        }
     }
 
     return resInfo;
 };
 
-export default useRestaurantMenu;
+export default useRestaurantMenu;   
