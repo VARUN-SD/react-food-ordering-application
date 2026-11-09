@@ -16,6 +16,8 @@ import Shimmer from "./Shimmer";
 
     const[loading,setLoading]=useState(true);
 
+    const [error,setError]=useState(false);
+
     const onlineStatus=useOnlineStatus();   //Custom Hook
 
     const VegRestaurantCard=withVegLabel(RestaurantCard);  //HOC
@@ -24,20 +26,36 @@ import Shimmer from "./Shimmer";
         fetchResList()
     },[]);
 
-    const fetchResList=async()=>{
-        try{
-            const data=await fetch(ResListAPI);
-            const json=await data.json();
-            const restaurants=json?.data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
-            //console.log(restaurants);
-            setListofRestaurants(restaurants); // Original API data
-            setFilteredRestaurants(restaurants); // Data currently displayed on the screen
-        } catch (error) {
-            console.error("Failed to fetch restaurants:",error);
-        } finally {
-            setLoading(false);
-        }
+    const fetchResList = async () => {
+
+  try {
+    setError(false);
+
+    const response = await fetch("/.netlify/functions/restaurants");
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch restaurants");
     }
+
+    const json = await response.json();
+
+    const restaurants =json?.data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
+
+    if (restaurants.length === 0) {
+      throw new Error("No restaurant data available");
+    }
+
+    setListofRestaurants(restaurants);
+    setFilteredRestaurants(restaurants);
+
+  } catch (error) {
+    console.error("Failed to fetch restaurants:", error);
+    setError(true);
+
+  } finally {
+    setLoading(false);
+  }
+};
 
     if (onlineStatus === false) {
     return (
@@ -50,6 +68,29 @@ import Shimmer from "./Shimmer";
       </div>
     );
   }
+    if (error) {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center">
+      <h1 className="text-2xl font-bold">
+        Unable to load restaurants
+      </h1>
+
+      <p className="text-gray-500 mt-2">
+        Please try again.
+      </p>
+
+      <button
+        onClick={() => {
+          setLoading(true);
+          fetchResList();
+        }}
+        className="mt-4 bg-orange-500 text-white px-5 py-2 rounded-lg"
+      >
+        Retry
+      </button>
+    </div>
+  );
+}
 
     if (loading) return <Shimmer/>;
 
