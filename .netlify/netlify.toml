@@ -1,0 +1,30 @@
+functionsDirectory = "C:\\Users\\DARA VARUN\\OneDrive\\Desktop\\Food Ordering App UI\\netlify\\functions"
+functionsDirectoryOrigin = "config"
+plugins = []
+headers = []
+redirects = []
+
+[build]
+publish = "C:\\Users\\DARA VARUN\\OneDrive\\Desktop\\Food Ordering App UI\\dist"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "npm run build"
+functions = "C:\\Users\\DARA VARUN\\OneDrive\\Desktop\\Food Ordering App UI\\netlify\\functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[functions]
+
+[functions."*"]

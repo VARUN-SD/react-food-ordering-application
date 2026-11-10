@@ -16,8 +16,6 @@ import Shimmer from "./Shimmer";
 
     const[loading,setLoading]=useState(true);
 
-    const [error,setError]=useState(false);
-
     const onlineStatus=useOnlineStatus();   //Custom Hook
 
     const VegRestaurantCard=withVegLabel(RestaurantCard);  //HOC
@@ -25,76 +23,43 @@ import Shimmer from "./Shimmer";
     useEffect(()=>{
         fetchResList()
     },[]);
+  
 
     const fetchResList = async () => {
+      try {
+        const response = await fetch(ResListAPI);
+        const json = await response.json();
+        const restaurants =json?.data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
 
-  try {
-    setError(false);
+        if (restaurants.length === 0) {
+          throw new Error("No restaurant data available");
+        }
 
-    const response = await fetch("/.netlify/functions/restaurants");
+        setListofRestaurants(restaurants);  //Original api data
+        setFilteredRestaurants(restaurants);  //displayed data
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch restaurants");
-    }
-
-    const json = await response.json();
-
-    const restaurants =json?.data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
-
-    if (restaurants.length === 0) {
-      throw new Error("No restaurant data available");
-    }
-
-    setListofRestaurants(restaurants);
-    setFilteredRestaurants(restaurants);
-
-  } catch (error) {
-    console.error("Failed to fetch restaurants:", error);
-    setError(true);
-
-  } finally {
-    setLoading(false);
-  }
-};
+      } catch (error) {
+        console.error("Failed to fetch restaurants:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
     if (onlineStatus === false) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="text-center">
-          <span className="text-6xl mb-4">📡</span>
-          <h1 className="text-2xl font-bold text-slate-800"> Looks like You're Offline! </h1>
-          <p className="text-slate-500 mt-2"> Please check your Internet connection </p>
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-slate-50">
+          <div className="text-center">
+            <span className="text-6xl mb-4">📡</span>
+            <h1 className="text-2xl font-bold text-slate-800"> Looks like You're Offline! </h1>
+            <p className="text-slate-500 mt-2"> Please check your Internet connection </p>
+          </div>
         </div>
-      </div>
-    );
-  }
-    if (error) {
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-2xl font-bold">
-        Unable to load restaurants
-      </h1>
-
-      <p className="text-gray-500 mt-2">
-        Please try again.
-      </p>
-
-      <button
-        onClick={() => {
-          setLoading(true);
-          fetchResList();
-        }}
-        className="mt-4 bg-orange-500 text-white px-5 py-2 rounded-lg"
-      >
-        Retry
-      </button>
-    </div>
-  );
-}
+      );
+    }
 
     if (loading) return <Shimmer/>;
 
-     return (
+    return (
       <div className="min-h-screen bg-slate-50">
 
       {/* HERO SECTION */}
@@ -108,11 +73,11 @@ import Shimmer from "./Shimmer";
 
           {/* SEARCH */}
           <div className="max-w-2xl mx-auto mt-8 flex bg-white rounded-2xl p-2 shadow-xl">
-            <span className="flex items-center px-3 text-xl"> 🔍 </span>
+            <span className="flex items-center px-1 text-xl"> 🔍 </span>
             <input type="text" data-testid="SearchInput" name="search" placeholder="Search for restaurants..."
               className="flex-1 px-2 py-3 outline-none text-slate-700" value={searchText}
               onChange={(e) => setSearchText(e.target.value)} />
-            <button className="bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold
+            <button className="bg-slate-900 text-white px-2 sm:px-6 py-3 rounded-xl font-semibold
                          hover:bg-slate-800 transition-all duration-200 hover:scale-105 cursor-pointer"
               onClick={() => {
                 const searchedRestaurant = ListofRestaurants.filter((res) =>
@@ -175,7 +140,7 @@ import Shimmer from "./Shimmer";
         </div>
       )}
       </div>
-  );
-};
+    );
+ };
 
 export default Body;
