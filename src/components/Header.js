@@ -1,18 +1,18 @@
 import { useContext, useState } from "react";
 import { LOGO } from "../utils/constants";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import { FaShoppingCart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import UserContext from "../utils/UserContext";
 const Header=()=>{
 
-    const {loggedInUser}=useContext(UserContext);
+    const {loggedInUser}=useContext(UserContext); //using context value here
 
     const [Button,setButton]=useState("Login");
 
-    const onlineStatus=useOnlineStatus();
-    //Subscribing to the store using a Selector
+    const onlineStatus=useOnlineStatus(); //custom hook
+     //Subscribing to the store using a Selector
     const cartItems=useSelector((store)=>store.cart.items);
 
     return(
@@ -24,7 +24,7 @@ const Header=()=>{
                         <span>Online Status: </span>
                         <span>{onlineStatus ? "🟢 Online" : "🔴 Offline"}</span>
                     </li>
-                    <li className="px-4 "><Link to="/" className="text-gray-700 font-medium hover:text-orange-500">Home</Link></li>
+                    <li className="px-4 "><NavLink to="/" className="text-gray-700 font-medium active:*:text-orange-400 hover:text-orange-500">Home</NavLink></li>
                     <li className="px-3 "><Link to="/about" className="text-gray-700 font-medium hover:text-orange-500">About Us</Link></li>
                     <li className="px-3 "><Link to="/contact" className="text-gray-700 font-medium hover:text-orange-500">Contact Us</Link></li>
                     <li className="mr-2"><Link to="/cart" className="relative inline-block">

@@ -4,7 +4,7 @@ import Body from "./components/Body";
 import { createBrowserRouter,Outlet,RouterProvider } from "react-router";
 import Error from "./components/Error";
 import RestaurantMenu from "./components/RestaurantMenu";
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import UserContext from "./utils/UserContext";
 import { Provider } from "react-redux";
 import appStore from "./utils/appStore";

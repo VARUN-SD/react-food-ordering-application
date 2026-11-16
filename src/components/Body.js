@@ -23,18 +23,12 @@ import Shimmer from "./Shimmer";
     useEffect(()=>{
         fetchResList()
     },[]);
-  
 
     const fetchResList = async () => {
       try {
         const response = await fetch(ResListAPI);
         const json = await response.json();
         const restaurants =json?.data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
-
-        if (restaurants.length === 0) {
-          throw new Error("No restaurant data available");
-        }
-
         setListofRestaurants(restaurants);  //Original api data
         setFilteredRestaurants(restaurants);  //displayed data
 
@@ -67,7 +61,7 @@ import Shimmer from "./Shimmer";
         <div className="max-w-7xl mx-auto px-6 py-14 text-center">
           <p className="text-orange-100 font-medium mb-2"> Hungry? We've got you covered 🍴 </p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white"
-           > Discover Your Next <span className="block">Favourite Meal</span> </h1>
+            > Discover Your Next <span className="block">Favourite Meal</span> </h1>
           <p className="text-orange-50 mt-4 max-w-xl mx-auto"
             >  Explore the best restaurants and delicious food around you.  </p>
 
@@ -85,12 +79,12 @@ import Shimmer from "./Shimmer";
             );
                 setFilteredRestaurants(searchedRestaurant);
               }}> Search </button>
-        {searchText && <button  className="px-2 hover:text-orange-500 cursor-pointer"
-           onClick={() => {
+          {searchText && <button  className="px-2 hover:text-orange-500 cursor-pointer"
+            onClick={() => {
               setSearchText("");
               setFilteredRestaurants(ListofRestaurants);
               setTopRated("Top Rated Restaurants");
-        }} > <IoMdCloseCircle size={25}/> </button>}
+            }} > <IoMdCloseCircle size={25}/> </button>}
           </div>
         </div>
       </section>
@@ -101,7 +95,7 @@ import Shimmer from "./Shimmer";
           <div>
             <h2 className="text-2xl font-bold text-slate-800" >  Restaurants </h2>
             <p className="text-slate-500 text-sm mt-1" > Discover something delicious today  </p>
-            </div>
+          </div>
           <button className="bg-white border border-slate-200 px-5 py-3 rounded-xl font-semibold text-slate-700 cursor-pointer
                        shadow-sm hover:shadow-md hover:border-orange-400 hover:text-orange-500 transition-all duration-200"
             onClick={() => {
@@ -122,19 +116,17 @@ import Shimmer from "./Shimmer";
         {filteredRestaurant.map((restaurant) => (
           <Link key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id} >
             {restaurant.info.veg ? <VegRestaurantCard resData={restaurant} /> : <RestaurantCard resData={restaurant} /> }
-          </Link>
-        ))}
-         {filteredRestaurant.map((restaurant) => (
+          </Link>))}
+        {filteredRestaurant.map((restaurant) => (
           <Link key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id} >
             {restaurant.info.veg ? <VegRestaurantCard resData={restaurant} /> : <RestaurantCard resData={restaurant} /> }
-          </Link>
-        ))}
+          </Link>))}
       </div>
 
       {/* NO RESULTS */}
       {filteredRestaurant.length === 0 && (
         <div className="text-center py-20">
-          <div className="text-6xl mb-4">🍽️</div>
+          <span className="text-6xl mb-4">🍽️</span>
           <h2 className="text-2xl font-bold text-slate-800"> No restaurants found </h2>
           <p className="text-slate-500 mt-2"> Try searching for something else. </p>
         </div>
