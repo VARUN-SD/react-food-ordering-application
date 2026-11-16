@@ -1,0 +1,4 @@
+{
+	"siteId": "22bad77c-9fa8-4620-80a4-f28b115b011b",
+	"dbConnectionString": "postgres://localhost:55678/postgres"
+}
